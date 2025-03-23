@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* 
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -23,4 +24,92 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+*/
+
+:root {
+  --big-button-size: 15vmin;
+  --med-button-size: 6vmin;
+}
+
+.main-container {
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+} 
+
+.control-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.volume-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+
+  top: 0;
+  left: 0;
+  padding: 5vmin;
+  display: flex;
+  flex-direction: row;
+  & button svg {
+    min-width: var(--med-button-size);
+    min-height: var(--med-button-size);
+  }
+}
+
+.volume-slider {
+  min-width: 25vmin;
+}
+
+.button-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5vmin;
+  display: flex;
+  flex-direction: row;
+
+  & button svg {
+    min-width: var(--med-button-size);
+    min-height: var(--med-button-size);
+  }
+}
+
+.play-pause-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row;
+
+  & button svg, & > div {
+    min-width: var(--big-button-size);
+    min-height: var(--big-button-size);
+  }
+}
+
+.play-pause-panel > * {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 1;
+/*   
+  min-width: 10vmin;
+  margin: auto;
+  width: 33.3% */
+}
+
+.seeking-panel {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 5vmin;
+
 }
