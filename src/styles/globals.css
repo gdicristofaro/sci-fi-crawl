@@ -52,6 +52,7 @@ body {
   display: flex;
   align-items: center;
   justify-items: center;
+  gap: 3vmin;
 
   top: 0;
   left: 0;
@@ -112,4 +113,15 @@ body {
   width: 100%;
   padding: 5vmin;
 
+}
+
+.alert-container {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0s 2s, opacity 2s linear;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 5vmin 10vmin 0 10vmin;
+  z-index: 999999;
 }
