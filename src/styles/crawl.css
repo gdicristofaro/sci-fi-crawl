@@ -4,27 +4,31 @@
     --delay: 0s;
   }
 
-  body {
+  /* body {
     overflow: hidden;
     font-family: "STARWARS", "Russo One", sans-serif;
     color: var(--text-yellow);
     background: #000000;
-  }
-
-  p {
-    font-family: "STARWARS", "Russo One", sans-serif;
-    color: var(--text-yellow);
-  }
+  } */
 
   .crawl-container {
     position: absolute;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
+    background: #000000;
+    user-select: none;
   }
 
-  .logo {
-    z-index: 99;
+
+  .crawl-container p {
+    font-family: "STARWARS", "Russo One", sans-serif;
+    color: var(--text-yellow);
+  }
+
+  
+  .crawl-container .logo {
+    z-index: 2;
     position: absolute;
     display: block;
     top: 50vh;
@@ -40,11 +44,11 @@
     width: auto;
   }
 
-  svg>#logo {
+  .crawl-container svg>#logo {
     fill: var(--text-yellow);
   }
 
-  .star {
+  .crawl-container .star {
     position: absolute;
     width: 0.5px;
     height: 0.5px;
@@ -52,7 +56,7 @@
     animation: animStar 150s linear infinite;
   }
 
-  .star2 {
+  .crawl-container .star2 {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -60,7 +64,7 @@
     animation: animStar 100s linear infinite;
   }
 
-  .star3 {
+  .crawl-container .star3 {
     position: absolute;
     width: 1.5px;
     height: 1.5px;
@@ -68,7 +72,7 @@
     animation: animStar 50s linear infinite;
   }
 
-  .intro-div {
+  .crawl-container .intro-div {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -86,7 +90,7 @@
     animation-timing-function: linear;
   }
 
-  .intro {
+  .crawl-container .intro {
     font-family: "Karla", sans-serif;
     font-weight: 350;
     font-size: 6vmin;
@@ -94,7 +98,7 @@
     color: var(--intro-blue);
   }
 
-  #scene {
+  .crawl-container .scene {
     height: 600vh;
     width: 100vw;
     margin-left: -50vw;
@@ -107,11 +111,11 @@
     overflow: hidden;
     transform: perspective(300px) rotateX(18deg);
     transform-origin: 50% 100%;
-    z-index: 9999;
+    z-index: 3;
   }
 
 
-  #crawl {
+  .crawl-container .crawl {
     font-family: "News Cycle", sans-serif;
 
     font-size: 10vmin;
@@ -132,7 +136,7 @@
     text-size-adjust: 100%;
   }
 
-  #episode {
+  .crawl-container .episode {
     text-align: center;
     font-size: 9vmin;
     line-height:9vmin;
@@ -140,7 +144,7 @@
     margin-bottom: 6vmin;
   }
 
-  #title {
+  .crawl-container .title {
     transform: scaleY(1.75);
     margin-top: 0;
     margin-bottom: 10vmin;
@@ -148,12 +152,12 @@
     text-transform: capitalize;
   }
 
-  #content {
+  .crawl-container .content {
     line-height: 15vmin;
     
   }
 
-  .starpattern {
+  .crawl-container .starpattern {
     z-index: 1;
     opacity: 0;
     animation-name: starsPatternAnim;

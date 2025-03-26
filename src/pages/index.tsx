@@ -23,7 +23,7 @@ export default function Home() {
   let [playStatus, setPlayStatus] = useState({
     playing: false,
     position: 0,
-
+    showPanel: false
   });
 
 
@@ -35,8 +35,7 @@ export default function Home() {
       <div className="main-container">
         <CrawlContainer />
 
-        <div className="control-panel">
-
+        <div className={"control-panel" + (playStatus.showPanel ? " show" : "")} onClick={() => setPlayStatus((prev) => ({...prev, showPanel: !prev.showPanel}))}>
           <div className="volume-panel">
             <VolumePanel />
           </div>

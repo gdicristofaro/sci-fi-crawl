@@ -1,5 +1,44 @@
-export default () => {
+import { useEffect } from "react";
 
+// Set the star total constant number.
+const stars = 150;
+
+
+// Create a function to generate our star constant.
+const genStars = (pxWidth: number, pxHeight: number) => {
+  var x = Math.floor(Math.random() * pxWidth);
+  var y = Math.floor(Math.random() * pxHeight);
+  return {x,y};
+}
+
+const genStarPatterns = (pxWidth: number, pxHeight: number) => {
+            // Create a loop that individually places each star.
+            let toRet = [];
+            for (let i = 0; i < stars; i++) {
+              for (let className in ["star", "star2", "star3"]) {
+                toRet.push({className, ...genStars(pxWidth, pxHeight)});
+              }
+            }
+            return toRet;
+            
+              // //  Create the instructions for the first type of star to show.
+              // var theseStars = document.createElement("nav");
+              // theseStars.style.top = placeStars[0] + "px";
+              // theseStars.style.left = placeStars[1] + "px";
+              // theseStars.className = "star";
+              // theseStars.classList.add("starpattern");
+      
+            
+}
+
+export default () => {
+  useEffect(() => {
+
+
+  }, []);
+
+  // let starPatterns = genStarPatterns(document)
+      
 
 /*
 
@@ -24,52 +63,6 @@ export default () => {
             }
           }
       
-          // Set the star total constant number.
-          const stars = 150;
-          // Create a function to generate our star constant.
-          function genStars() {
-            var setX = 2000;
-            var newX = Math.floor(Math.random() * setX);
-            var setY = 2000;
-            var newY = Math.floor(Math.random() * setY);
-            return [newX, newY];
-          }
-      
-          function generateStarPattern() {
-            // Create a loop that individually places each star.
-            for (i = 0; i < stars; i++) {
-              // Assign the variables calling the star placement function as needed.
-              var placeStars = genStars();
-              var placeStars2 = genStars();
-              var placeStars3 = genStars();
-              //  Create the instructions for the first type of star to show.
-              var theseStars = document.createElement("nav");
-              theseStars.style.top = placeStars[0] + "px";
-              theseStars.style.left = placeStars[1] + "px";
-              theseStars.className = "star";
-              theseStars.classList.add("starpattern");
-      
-              document.body.append(theseStars);
-              // Create the instructions for the second type of star to show.
-              var theseStars2 = document.createElement("nav");
-              theseStars2.style.top = placeStars2[0] + "px";
-              theseStars2.style.left = placeStars2[1] + "px";
-              theseStars2.className = "star2";
-              theseStars2.classList.add("starpattern");
-      
-              document.body.append(theseStars2);
-              // Create the instructions for the third type of star to show.
-              var theseStars3 = document.createElement("nav");
-              theseStars3.style.top = placeStars3[0] + "px";
-              theseStars3.style.left = placeStars3[1] + "px";
-              theseStars3.className = "star3";
-              theseStars3.classList.add("starpattern");
-      
-              document.body.append(theseStars3);
-            }
-          }
-      
-          generateStarPattern();
       
           // A collection of the various episode introductions.
           var defaultCollection = {
@@ -109,11 +102,11 @@ export default () => {
         <div className="intro-div">
           <p className="intro"> A long time ago in a galaxy far,<br />far away. . . .</p>
         </div>
-        <div id="scene">
-          <div id="crawl">
-            <p id="episode"></p>
-            <p id="title"></p>
-            <div id="content"></div>
+        <div className="scene">
+          <div className="crawl">
+            <p className="episode"></p>
+            <p className="title"></p>
+            <div className="content"></div>
           </div>
         </div>
         {/* <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Star_Wars_Logo.svg" aria-details="Star Wars Logo"/> */}
