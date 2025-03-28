@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 // Set the star total constant number.
 const STAR_DENSITY = 5400;
 
+const DEFAULT_INTRO = " A long time ago in a galaxy far,\nfar away. . . ."
+const DEFAULT_EPISODE = "EPISODE VI";
+const DEFAULT_TITLE = "Return of the Jedi";
+
+const DEFAULT_CONTENT = `It is a period of civil wars in the galaxy. A brave alliance of underground freedom fighters has challenged the tyranny and oppression of the awesome GALACTIC EMPIRE.
+Striking from a fortress hidden among the billion stars of the galaxy, rebel spaceships have won their first victory in a battle with the powerful Imperial Starfleet. The EMPIRE fears that another defeat could bring a thousand more solar systems into the rebellion, and Imperial control over the galaxy would be lost forever.
+To crush the rebellion once and for all, the EMPIRE is constructing a sinister new battle station. Powerful enough to destroy an entire planet, its completion spells certain doom for the champions of freedom.`
 
 // Create a function to generate our star constant.
 const genStars = (pxWidth: number, pxHeight: number) => {
@@ -25,7 +32,15 @@ const genStarPatterns = (pxWidth: number, pxHeight: number): {className: string,
 }
 
 
-export default () => {
+export default (props: {intro: string | undefined, episode: string | undefined, title: string | undefined, content: string | undefined}) => {
+  let {intro, episode, title, content} = props;
+  
+  intro = intro ?? DEFAULT_INTRO;
+  episode = episode ?? DEFAULT_EPISODE;
+  title = title ?? DEFAULT_TITLE;
+  content = content ?? DEFAULT_CONTENT;
+
+
   let [starPatterns, setStarPatterns] = useState<{className: string, x: number, y: number}[] | undefined>(undefined);
 
   useEffect(() => {
@@ -99,17 +114,17 @@ export default () => {
         <source src="./media/Star.Wars.Intro.mp3" type="audio/mp3" />
         <source src="https://play.starwars.com/html5/starwars_crawlcreator/audio/crawl_mixdown.mp3" type="audio/mp3" /> 
         </audio> */}
-        <div className="star-container">
+        <div className="star-container starpattern">
           {(starPatterns || []).map(({x, y, className}, idx) => (<nav key={idx} style={{top: y, left: x}} className={className} />))}
         </div>
         <div className="intro-div">
-          <p className="intro"> A long time ago in a galaxy far,<br />far away. . . .</p>
+          <div className="intro">{(intro || "").split("\n").map((text, idx) => (<p key={idx}>{text}</p>))}</div>
         </div>
         <div className="scene">
           <div className="crawl">
-            <p className="episode"></p>
-            <p className="title"></p>
-            <div className="content"></div>
+            <p className="episode">{episode}</p>
+            <p className="title">{title}</p>
+            <div className="content">{(content || "").split("\n").map((text, idx) => (<p key={idx}>{text}</p>))}</div>
           </div>
         </div>
         {/* <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Star_Wars_Logo.svg" aria-details="Star Wars Logo"/> */}

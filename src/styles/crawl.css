@@ -2,40 +2,40 @@
     --intro-blue: #5199c0;
     --text-yellow: #c5942d;
     --delay: 0s;
-  }
+}
 
-  /* body {
+/* body {
     overflow: hidden;
     font-family: "STARWARS", "Russo One", sans-serif;
     color: var(--text-yellow);
     background: #000000;
   } */
 
-  .crawl-container {
+.crawl-container {
     position: absolute;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
     background: #000000;
     user-select: none;
-  }
+}
 
-  .star-container {
+.star-container {
     position: absolute;
     overflow: hidden;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-  }
+}
 
-  .crawl-container p {
+.crawl-container p {
     font-family: "STARWARS", "Russo One", sans-serif;
     color: var(--text-yellow);
-  }
+}
 
 
-  .crawl-container .logo {
+.crawl-container .logo {
     z-index: 2;
     position: absolute;
     display: block;
@@ -50,37 +50,37 @@
     animation-timing-function: cubic-bezier(0.5, 1, 0.89, 1);
     height: auto;
     width: auto;
-  }
+}
 
-  .crawl-container svg>#logo {
+.crawl-container svg>#logo {
     fill: var(--text-yellow);
-  }
+}
 
-  .crawl-container .star {
+.crawl-container .star {
     position: absolute;
     width: 0.5px;
     height: 0.5px;
     background-color: white;
     animation: animStar 150s linear infinite;
-  }
+}
 
-  .crawl-container .star2 {
+.crawl-container .star2 {
     position: absolute;
     width: 1px;
     height: 1px;
     background-color: white;
     animation: animStar 100s linear infinite;
-  }
+}
 
-  .crawl-container .star3 {
+.crawl-container .star3 {
     position: absolute;
     width: 1.5px;
     height: 1.5px;
     background-color: white;
     animation: animStar 50s linear infinite;
-  }
+}
 
-  .crawl-container .intro-div {
+.crawl-container .intro-div {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -96,17 +96,20 @@
     animation-delay: calc(1s + var(--delay));
     /* animation-delay: calc(180s + var(--delay)); */
     animation-timing-function: linear;
-  }
+}
 
-  .crawl-container .intro {
-    font-family: "Karla", sans-serif;
-    font-weight: 350;
-    font-size: 6vmin;
+.crawl-container .intro {
     margin: auto;
-    color: var(--intro-blue);
-  }
 
-  .crawl-container .scene {
+    & p {
+        font-family: "Karla", sans-serif;
+        font-weight: 350;
+        font-size: 6vmin;
+        color: var(--intro-blue);
+    }
+}
+
+.crawl-container .scene {
     height: 600vh;
     width: 100vw;
     margin-left: -50vw;
@@ -120,10 +123,10 @@
     transform: perspective(300px) rotateX(18deg);
     transform-origin: 50% 100%;
     z-index: 3;
-  }
+}
 
 
-  .crawl-container .crawl {
+.crawl-container .crawl {
     font-family: "News Cycle", sans-serif;
 
     font-size: 10vmin;
@@ -142,104 +145,104 @@
     text-align: justify;
     text-shadow: none;
     text-size-adjust: 100%;
-  }
+}
 
-  .crawl-container .episode {
+.crawl-container .episode {
     text-align: center;
     font-size: 9vmin;
-    line-height:9vmin;
+    line-height: 9vmin;
     margin-top: 0;
     margin-bottom: 6vmin;
-  }
+}
 
-  .crawl-container .title {
+.crawl-container .title {
     transform: scaleY(1.75);
     margin-top: 0;
     margin-bottom: 10vmin;
     text-align: center;
     text-transform: capitalize;
-  }
+}
 
-  .crawl-container .content {
+.crawl-container .content {
     line-height: 15vmin;
-    
-  }
 
-  .crawl-container .starpattern {
+}
+
+.crawl-container .starpattern {
     z-index: 1;
     opacity: 0;
     animation-name: starsPatternAnim;
     animation-duration: 200s;
     animation-timing-function: linear;
     animation-delay: calc(8s + var(--delay));
-  }
+}
 
-  @keyframes leadIn {
+@keyframes leadIn {
     0% {
-      opacity: 0;
+        opacity: 0;
     }
 
     10% {
-      opacity: 1;
+        opacity: 1;
     }
 
     60% {
-      opacity: 1;
+        opacity: 1;
     }
 
     100% {
-      opacity: 0;
+        opacity: 0;
     }
-  }
+}
 
-  @keyframes starsPatternAnim {
+@keyframes starsPatternAnim {
     0% {
-      opacity: 1;
+        opacity: 1;
     }
 
     100% {
-      opacity: 1;
+        opacity: 1;
     }
-  }
+}
 
-  @keyframes logo {
+@keyframes logo {
     0% {
-      opacity: 1;
-      height: 120vh;
-      width: 120vw;
-      margin-top: -60vh;
-      margin-left: -60vw;
+        opacity: 1;
+        height: 120vh;
+        width: 120vw;
+        margin-top: -60vh;
+        margin-left: -60vw;
     }
 
     50% {
-      opacity: 1;
+        opacity: 1;
     }
 
     100% {
-      opacity: 0;
-      height: 0;
-      width: 0;
-      margin-top: 0;
-      margin-left: 0;
+        opacity: 0;
+        height: 0;
+        width: 0;
+        margin-top: 0;
+        margin-left: 0;
     }
-  }
+}
 
-  @keyframes scroll {
+@keyframes scroll {
     0% {
-      top: 100%;
+        top: 100%;
     }
 
     100% {
-      top: -170%;
+        top: -170%;
     }
-  }
+}
 
-  @keyframes animStar {
+@keyframes animStar {
     0% {
-      transform: translateY(-350px);
+        transform: translateY(-350px);
     }
 
     100% {
-      transform: translateY(0px);
+        transform: translateY(0px);
     }
-  }
+}
