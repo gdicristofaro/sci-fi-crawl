@@ -1,47 +1,47 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 
 // Set the star total constant number.
-const stars = 150;
+const STAR_DENSITY = 5400;
 
 
 // Create a function to generate our star constant.
 const genStars = (pxWidth: number, pxHeight: number) => {
   var x = Math.floor(Math.random() * pxWidth);
-  var y = Math.floor(Math.random() * pxHeight);
+  var y = Math.floor(Math.random() * pxHeight * 2);
   return {x,y};
 }
 
-const genStarPatterns = (pxWidth: number, pxHeight: number) => {
-            // Create a loop that individually places each star.
-            let toRet = [];
-            for (let i = 0; i < stars; i++) {
-              for (let className in ["star", "star2", "star3"]) {
-                toRet.push({className, ...genStars(pxWidth, pxHeight)});
-              }
-            }
-            return toRet;
-            
-              // //  Create the instructions for the first type of star to show.
-              // var theseStars = document.createElement("nav");
-              // theseStars.style.top = placeStars[0] + "px";
-              // theseStars.style.left = placeStars[1] + "px";
-              // theseStars.className = "star";
-              // theseStars.classList.add("starpattern");
-      
-            
+const genStarPatterns = (pxWidth: number, pxHeight: number): {className: string, x: number, y: number}[] => {
+  // Create a loop that individually places each star.
+  let toRet = [];
+  let iterations = pxWidth * pxHeight / STAR_DENSITY
+  for (let i = 0; i < iterations; i++) {
+    for (let className of ["star", "star2", "star3"]) {
+      toRet.push({className, ...genStars(pxWidth, pxHeight)});
+    }
+  }
+  return toRet;
 }
 
+
 export default () => {
+  let [starPatterns, setStarPatterns] = useState<{className: string, x: number, y: number}[] | undefined>(undefined);
+
   useEffect(() => {
+    let updateListener = () => {
+      setStarPatterns(genStarPatterns(window.innerWidth || 0, window.innerHeight || 0));
+    };
 
-
+    updateListener();
+    window.addEventListener("resize", updateListener);
+    return () => {
+      window.removeEventListener("resize", updateListener);
+    }
   }, []);
 
-  // let starPatterns = genStarPatterns(document)
-      
 
 /*
-
         <!-- JavaScript Code -->
         <script type="text/javascript">
           // taken from https://stackoverflow.com/a/6234804
@@ -99,6 +99,9 @@ export default () => {
         <source src="./media/Star.Wars.Intro.mp3" type="audio/mp3" />
         <source src="https://play.starwars.com/html5/starwars_crawlcreator/audio/crawl_mixdown.mp3" type="audio/mp3" /> 
         </audio> */}
+        <div className="star-container">
+          {(starPatterns || []).map(({x, y, className}, idx) => (<nav key={idx} style={{top: y, left: x}} className={className} />))}
+        </div>
         <div className="intro-div">
           <p className="intro"> A long time ago in a galaxy far,<br />far away. . . .</p>
         </div>
@@ -112,7 +115,7 @@ export default () => {
         {/* <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Star_Wars_Logo.svg" aria-details="Star Wars Logo"/> */}
         <svg className="logo" viewBox="0 0 634 273">
           <title>StarWarsLogo</title>
-          <g id="logo" stroke="none" stroke-width="1" fill="none" fill-rule="nonzero"
+          <g id="logo" stroke="none" strokeWidth="1" fill="none" fillRule="nonzero"
             transform="translate(-1.000000, 0.000000)">
             <path
               d="M119.718,148.207 L128.388,173.668 C133.079,187.436 137.267,198.447 137.813,198.447 C137.822,198.447 137.83,198.443 137.837,198.437 C138.437,197.907 155.407,148.626 155.407,148.626 L188.297,148.626 L148.617,264.245 L125.757,264.245 C125.757,264.245 101.357,193.774 101.457,193.506 L75.987,263.357 L53.357,263.357 L14.177,148.206 L46.907,148.228 C46.907,148.228 64.836,199.049 65.075,199.049 C65.076,199.049 65.076,199.048 65.077,199.047 L82.967,148.206 L119.718,148.206 L119.718,148.207 Z M3.003,140.2 L6.604,150.784 L45.784,265.933 L47.629,271.357 L53.358,271.357 L75.988,271.357 L81.586,271.357 L83.504,266.097 L101.189,217.597 C102.713,222.031 104.36,226.81 106.007,231.585 C112.096,249.24 118.198,266.862 118.198,266.862 L120.062,272.245 L125.758,272.245 L148.618,272.245 L154.33,272.245 L156.184,266.842 L195.864,151.224 L199.501,140.626 L188.297,140.626 L155.407,140.626 L149.701,140.626 L147.843,146.022 C144.869,154.657 140.922,166.053 137.547,175.698 C137.038,174.235 136.508,172.697 135.96,171.087 L127.291,145.627 L125.445,140.206 L119.718,140.206 L82.968,140.206 L77.302,140.206 L75.421,145.551 L64.968,175.257 C61.515,165.551 57.512,154.24 54.452,145.566 L52.57,140.232 L46.913,140.228 L14.183,140.207 L3.003,140.2 Z"
