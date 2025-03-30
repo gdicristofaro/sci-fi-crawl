@@ -1,10 +1,20 @@
 import { Tooltip, IconButton, Dialog, DialogTitle, DialogContent, TextField, FormControlLabel, Checkbox, DialogActions, Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid2';
 import SettingsIcon from '@mui/icons-material/Settings';
+import CrawlSettings from "@/dto/CrawlSettings";
+import { url } from "inspector";
+import { setData } from "@/utils/requestutils";
 
-export default () => {
+export default (props: CrawlSettings) => {
     let [settingsOpen, setSettingsOpen] = useState(false);
+    let [settings, setSettings] = useState(props);
+
+    useEffect(() => {
+        setSettings(props);
+    }, [props])
+
+    console.log("props are ", props, "and settings are ", settings)
     return (
         <>
             <Tooltip title="Settings">
@@ -43,6 +53,8 @@ export default () => {
                                 type="text"
                                 fullWidth
                                 variant="standard"
+                                value={settings.episode}
+                                onChange={(evt) => setSettings(prev => ({...prev, episode: evt.target.value}))}
                             />
 
                         </Grid>
@@ -56,6 +68,8 @@ export default () => {
                                 type="text"
                                 fullWidth
                                 variant="standard"
+                                value={settings.title}
+                                onChange={(evt) => setSettings(prev => ({...prev, title: evt.target.value}))}
                             />
                         </Grid>
                         <Grid size={12}>
@@ -69,6 +83,8 @@ export default () => {
                                 multiline
                                 fullWidth
                                 variant="standard"
+                                value={settings.crawl}
+                                onChange={(evt) => setSettings(prev => ({...prev, crawl: evt.target.value}))}
                             />
                         </Grid>
                         <Grid size={12} sx={{
@@ -86,13 +102,18 @@ export default () => {
                                 fullWidth
                                 multiline
                                 variant="standard"
+                                value={settings.intro}
+                                onChange={(evt) => setSettings(prev => ({...prev, intro: evt.target.value}))}
                             />
                             <FormControlLabel sx={{
                                 display: "inline-block",
                                 flexShrink: 0,
                                 flexGrow: 0,
                                 margin: "auto 3vmin 0 0"
-                            }} control={<Checkbox defaultChecked />} label="Show Intro" />
+                            }} control={<Checkbox defaultChecked 
+                                value={settings.showIntro}
+                                onChange={(evt) => setSettings(prev => ({...prev, showIntro: evt.target.value ? true : false}))}
+                            />} label="Show Intro" />
                         </Grid>
 
                         <Grid size={12}>
@@ -105,21 +126,9 @@ export default () => {
                                 type="text"
                                 fullWidth
                                 variant="standard"
+                                value={settings.logo}
+                                onChange={(evt) => setSettings(prev => ({...prev, logo: evt.target.value}))}
                             />
-                        </Grid>
-                        <Grid size={12}>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="crawl"
-                                name="Crawl"
-                                label="Crawl"
-                                type="text"
-                                multiline
-                                fullWidth
-                                variant="standard"
-                            />
-
                         </Grid>
 
                         <Grid size={12}>
@@ -132,13 +141,15 @@ export default () => {
                                 type="text"
                                 fullWidth
                                 variant="standard"
+                                value={settings.music}
+                                onChange={(evt) => setSettings(prev => ({...prev, music: evt.target.value}))}
                             />
                         </Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setSettingsOpen(false)}>Cancel</Button>
-                    <Button>Ok</Button>
+                    <Button onClick={() => setData(settings)}>Ok</Button>
                 </DialogActions>
             </Dialog>
         </>

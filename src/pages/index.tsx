@@ -2,7 +2,7 @@ import IconButton from "@mui/material/IconButton";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Slider from '@mui/material/Slider';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createTheme, ThemeProvider, Tooltip } from "@mui/material";
 
 import CopyLinkButton from "@/components/CopyLinkButton";
@@ -10,6 +10,8 @@ import FullScreenButton from "@/components/FullScreenButton";
 import SettingsButton from "@/components/SettingsButton";
 import VolumePanel from "@/components/VolumePanel";
 import CrawlContainer from "@/components/CrawlContainer";
+import { getData } from "@/utils/requestutils";
+import CrawlSettings from "@/dto/CrawlSettings";
 
 
 const darkTheme = createTheme({
@@ -26,6 +28,11 @@ export default function Home() {
     showPanel: false
   });
 
+  let [requestParams, setRequestParams] = useState<CrawlSettings | undefined>();
+  useEffect(() => {
+    setRequestParams(getData());
+  }, [])
+
 
   let handleChange = (event: Event, newValue: number | number[]) => {
     setPlayStatus((prev) => ({ ...prev, position: newValue as number }));
@@ -33,7 +40,7 @@ export default function Home() {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="main-container">
-        <CrawlContainer />
+        <CrawlContainer {...requestParams} />
 
         <div className={"control-panel" + (playStatus.showPanel ? " show" : "")} onClick={() => setPlayStatus((prev) => ({...prev, showPanel: !prev.showPanel}))}>
           <div className="volume-panel">
@@ -41,7 +48,7 @@ export default function Home() {
           </div>
 
           <div className="button-panel">
-            <SettingsButton />
+            <SettingsButton {...requestParams} />
             <CopyLinkButton />
             <FullScreenButton />
           </div>

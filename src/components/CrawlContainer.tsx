@@ -1,3 +1,4 @@
+import CrawlSettings from "@/dto/CrawlSettings";
 import { useEffect, useState } from "react";
 
 
@@ -32,13 +33,13 @@ const genStarPatterns = (pxWidth: number, pxHeight: number): {className: string,
 }
 
 
-export default (props: {intro: string | undefined, episode: string | undefined, title: string | undefined, content: string | undefined}) => {
-  let {intro, episode, title, content} = props;
+export default (props: CrawlSettings) => {
+  let {intro, episode, title, crawl} = props;
   
-  intro = intro ?? DEFAULT_INTRO;
-  episode = episode ?? DEFAULT_EPISODE;
-  title = title ?? DEFAULT_TITLE;
-  content = content ?? DEFAULT_CONTENT;
+  intro = intro && intro.length ? intro : DEFAULT_INTRO;
+  episode = episode && episode.length ? episode : DEFAULT_EPISODE;
+  title = title && title.length ? title : DEFAULT_TITLE;
+  crawl = crawl && crawl.length ? crawl : DEFAULT_CONTENT;
 
 
   let [starPatterns, setStarPatterns] = useState<{className: string, x: number, y: number}[] | undefined>(undefined);
@@ -124,7 +125,7 @@ export default (props: {intro: string | undefined, episode: string | undefined, 
           <div className="crawl">
             <p className="episode">{episode}</p>
             <p className="title">{title}</p>
-            <div className="content">{(content || "").split("\n").map((text, idx) => (<p key={idx}>{text}</p>))}</div>
+            <div className="content">{(crawl || "").split("\n").map((text, idx) => (<p key={idx}>{text}</p>))}</div>
           </div>
         </div>
         {/* <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Star_Wars_Logo.svg" aria-details="Star Wars Logo"/> */}

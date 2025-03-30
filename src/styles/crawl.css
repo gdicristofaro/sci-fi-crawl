@@ -58,10 +58,11 @@
 
 .crawl-container .star {
     position: absolute;
-    width: 0.5px;
-    height: 0.5px;
+    width: 0.1vmin;
+    height: 0.1vmin;
     background-color: white;
-    animation: animStar 150s linear infinite;
+    animation-delay: calc(8s + var(--delay));
+    animation: animStar 600s linear infinite;
 }
 
 .crawl-container .star2 {
@@ -69,7 +70,8 @@
     width: 1px;
     height: 1px;
     background-color: white;
-    animation: animStar 100s linear infinite;
+    animation-delay: calc(8s + var(--delay));
+    animation: animStar 400s linear infinite;
 }
 
 .crawl-container .star3 {
@@ -77,7 +79,8 @@
     width: 1.5px;
     height: 1.5px;
     background-color: white;
-    animation: animStar 50s linear infinite;
+    animation-delay: calc(8s + var(--delay));
+    animation: animStar 200s linear infinite;
 }
 
 .crawl-container .intro-div {
@@ -120,7 +123,7 @@
     left: 50vw;
 
     overflow: hidden;
-    transform: perspective(300px) rotateX(18deg);
+    transform: perspective(25vh) rotateX(18deg);
     transform-origin: 50% 100%;
     z-index: 3;
 }
@@ -132,19 +135,24 @@
     font-size: 10vmin;
     position: absolute;
     top: 100%;
+    width: 100%;
     color: var(--text-yellow);
     animation-name: scroll;
-    animation-duration: 185s;
+    animation-duration: 200s;
     /* animation-delay: calc(0s + var(--delay)); */
-    animation-delay: calc(18s + var(--delay));
+    animation-delay: calc(16s + var(--delay));
     animation-timing-function: linear;
 
     font-stretch: condensed;
     font-weight: 600;
-    letter-spacing: 0px;
+    letter-spacing: 0;
     text-align: justify;
     text-shadow: none;
     text-size-adjust: 100%;
+
+    & p {
+        width: 100%;
+    }
 }
 
 .crawl-container .episode {
@@ -166,6 +174,9 @@
 .crawl-container .content {
     line-height: 15vmin;
 
+    & p {
+        margin-bottom: 8vmin;
+    }
 }
 
 .crawl-container .starpattern {
@@ -239,10 +250,10 @@
 
 @keyframes animStar {
     0% {
-        transform: translateY(-350px);
+        transform: translateY(-75vmin);
     }
 
     100% {
-        transform: translateY(0px);
+        transform: translateY(0vmin);
     }
 }
