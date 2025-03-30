@@ -20,18 +20,24 @@ const darkTheme = createTheme({
   },
 });
 
+export default () => {
+  const [isMounted, setIsMounted] = useState(false);
 
-export default function Home() {
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  return isMounted && (<Home/>);
+}
+
+const Home = () => {
   let [playStatus, setPlayStatus] = useState({
     playing: false,
     position: 0,
     showPanel: false
   });
 
-  let [requestParams, setRequestParams] = useState<CrawlSettings | undefined>();
-  useEffect(() => {
-    setRequestParams(getData());
-  }, [])
+  let requestParams = getData();
 
 
   let handleChange = (event: Event, newValue: number | number[]) => {
@@ -42,7 +48,7 @@ export default function Home() {
       <div className="main-container">
         <CrawlContainer {...requestParams} />
 
-        <div className={"control-panel" + (playStatus.showPanel ? " show" : "")} onClick={() => setPlayStatus((prev) => ({...prev, showPanel: !prev.showPanel}))}>
+        <div className={"control-panel" + (playStatus.showPanel ? " show" : "")} onClick={() => setPlayStatus((prev) => ({ ...prev, showPanel: !prev.showPanel }))}>
           <div className="volume-panel">
             <VolumePanel />
           </div>

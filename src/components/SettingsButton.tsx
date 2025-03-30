@@ -10,10 +10,6 @@ export default (props: CrawlSettings) => {
     let [settingsOpen, setSettingsOpen] = useState(false);
     let [settings, setSettings] = useState(props);
 
-    useEffect(() => {
-        setSettings(props);
-    }, [props])
-
     console.log("props are ", props, "and settings are ", settings)
     return (
         <>
