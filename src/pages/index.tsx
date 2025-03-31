@@ -1,5 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from "react";
@@ -14,6 +15,9 @@ import { getData } from "@/utils/requestutils";
 import CrawlSettings from "@/dto/CrawlSettings";
 
 
+const MAX_SECS = 180;
+const SEC_RESOLUTION = 4;
+
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -27,28 +31,54 @@ export default () => {
     setIsMounted(true);
   }, []);
 
-  return isMounted && (<Home/>);
+  return isMounted && (<Home />);
 }
+
 
 const Home = () => {
   let [playStatus, setPlayStatus] = useState({
     playing: false,
     position: 0,
-    showPanel: false
+    startPlayTime: 0,
+    showPanel: true
   });
+
+  useEffect(() => {
+    if (playStatus.playing) {
+      let funct = () => {
+        setPlayStatus((prev) => ({ ...prev, position: (new Date().valueOf() - prev.startPlayTime) / (1000 / SEC_RESOLUTION) }));
+      };
+
+
+      let intervalId = setInterval(funct, (1000 / SEC_RESOLUTION));
+
+      return () => clearInterval(intervalId);
+    };
+  }, [playStatus.playing, playStatus.startPlayTime]);
 
   let requestParams = getData();
 
+  let setPosition = (position: number) => {
+    setPlayStatus((prev) => ({ ...prev, position }));
+  }
 
   let handleChange = (event: Event, newValue: number | number[]) => {
-    setPlayStatus((prev) => ({ ...prev, position: newValue as number }));
+    setPosition(newValue as number);
   }
+
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="main-container">
         <CrawlContainer {...requestParams} />
 
-        <div className={"control-panel" + (playStatus.showPanel ? " show" : "")} onClick={() => setPlayStatus((prev) => ({ ...prev, showPanel: !prev.showPanel }))}>
+        <div
+          id="control-panel"
+          className={"control-panel" + (playStatus.showPanel ? "" : " hide")}
+          onClick={(e) => {
+            if ((e.target as any).id === "control-panel") {
+              setPlayStatus((prev) => ({ ...prev, showPanel: !prev.showPanel }));
+            }
+          }}>
           <div className="volume-panel">
             <VolumePanel />
           </div>
@@ -61,14 +91,31 @@ const Home = () => {
 
           <div className="play-pause-panel">
             <Tooltip title="Replay">
-              <IconButton aria-label="replay">
+              <IconButton
+                aria-label="replay"
+                onClick={() => setPosition(0)}
+                disabled={playStatus.position <= 0}>
                 <ReplayIcon />
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Play">
-              <IconButton aria-label="play">
-                <PlayArrowIcon />
+            <Tooltip title={playStatus.playing ? "Pause" : "Play"}>
+              <IconButton aria-label="play" onClick={() => {
+                if (playStatus.playing) {
+                  document.documentElement.style.setProperty('--play-state', 'paused');
+                  setPlayStatus((prev) => ({ ...prev, playing: false }));
+                } else {
+                  document.documentElement.style.setProperty('--play-state', 'running');
+                  document.documentElement.style.setProperty('--delay', "-" + playStatus.position + "s");
+                  setPlayStatus((prev) => ({
+                    ...prev,
+                    playing: true,
+                    startPlayTime: new Date().valueOf() - playStatus.position,
+                    showPanel: false
+                  }));
+                }
+              }}>
+                {playStatus.playing ? (<PauseIcon />) : (<PlayArrowIcon />)}
               </IconButton>
             </Tooltip>
             {/* 
@@ -81,7 +128,7 @@ const Home = () => {
           </div>
 
           <div className="seeking-panel">
-            <Slider aria-label="Play Position" value={playStatus.position} onChange={handleChange} />
+            <Slider aria-label="Play Position" value={playStatus.position} min={0} max={MAX_SECS * SEC_RESOLUTION} onChange={handleChange} />
           </div>
         </div>
 

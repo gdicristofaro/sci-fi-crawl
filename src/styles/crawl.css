@@ -2,6 +2,7 @@
     --intro-blue: #5199c0;
     --text-yellow: #c5942d;
     --delay: 0s;
+    --play-state: paused; /*  or running */
 }
 
 /* body {
@@ -45,6 +46,7 @@
 
     animation-name: logo;
     animation-duration: 12s;
+    animation-play-state: var(--play-state);
     animation-delay: calc(8s + var(--delay));
     /* animation-delay: calc(180s + var(--delay)); */
     animation-timing-function: cubic-bezier(0.5, 1, 0.89, 1);
@@ -61,6 +63,7 @@
     width: 0.1vmin;
     height: 0.1vmin;
     background-color: white;
+    animation-play-state: var(--play-state);
     animation-delay: calc(8s + var(--delay));
     animation: animStar 600s linear infinite;
 }
@@ -70,6 +73,7 @@
     width: 1px;
     height: 1px;
     background-color: white;
+    animation-play-state: var(--play-state);
     animation-delay: calc(8s + var(--delay));
     animation: animStar 400s linear infinite;
 }
@@ -79,6 +83,7 @@
     width: 1.5px;
     height: 1.5px;
     background-color: white;
+    animation-play-state: var(--play-state);
     animation-delay: calc(8s + var(--delay));
     animation: animStar 200s linear infinite;
 }
@@ -96,6 +101,7 @@
     opacity: 0;
     animation-name: leadIn;
     animation-duration: 7s;
+    animation-play-state: var(--play-state);
     animation-delay: calc(1s + var(--delay));
     /* animation-delay: calc(180s + var(--delay)); */
     animation-timing-function: linear;
@@ -123,7 +129,7 @@
     left: 50vw;
 
     overflow: hidden;
-    transform: perspective(25vh) rotateX(18deg);
+    transform: perspective(30vh) rotateX(18deg);
     transform-origin: 50% 100%;
     z-index: 3;
 }
@@ -139,6 +145,7 @@
     color: var(--text-yellow);
     animation-name: scroll;
     animation-duration: 200s;
+    animation-play-state: var(--play-state);
     /* animation-delay: calc(0s + var(--delay)); */
     animation-delay: calc(16s + var(--delay));
     animation-timing-function: linear;
@@ -185,6 +192,7 @@
     animation-name: starsPatternAnim;
     animation-duration: 200s;
     animation-timing-function: linear;
+    animation-play-state: var(--play-state);
     animation-delay: calc(8s + var(--delay));
 }
 

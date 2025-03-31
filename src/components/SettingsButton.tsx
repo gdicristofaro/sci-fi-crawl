@@ -50,7 +50,7 @@ export default (props: CrawlSettings) => {
                                 fullWidth
                                 variant="standard"
                                 value={settings.episode}
-                                onChange={(evt) => setSettings(prev => ({...prev, episode: evt.target.value}))}
+                                onChange={(evt) => setSettings(prev => ({ ...prev, episode: evt.target.value }))}
                             />
 
                         </Grid>
@@ -65,7 +65,7 @@ export default (props: CrawlSettings) => {
                                 fullWidth
                                 variant="standard"
                                 value={settings.title}
-                                onChange={(evt) => setSettings(prev => ({...prev, title: evt.target.value}))}
+                                onChange={(evt) => setSettings(prev => ({ ...prev, title: evt.target.value }))}
                             />
                         </Grid>
                         <Grid size={12}>
@@ -80,7 +80,7 @@ export default (props: CrawlSettings) => {
                                 fullWidth
                                 variant="standard"
                                 value={settings.crawl}
-                                onChange={(evt) => setSettings(prev => ({...prev, crawl: evt.target.value}))}
+                                onChange={(evt) => setSettings(prev => ({ ...prev, crawl: evt.target.value }))}
                             />
                         </Grid>
                         <Grid size={12} sx={{
@@ -99,16 +99,16 @@ export default (props: CrawlSettings) => {
                                 multiline
                                 variant="standard"
                                 value={settings.intro}
-                                onChange={(evt) => setSettings(prev => ({...prev, intro: evt.target.value}))}
+                                onChange={(evt) => setSettings(prev => ({ ...prev, intro: evt.target.value }))}
                             />
                             <FormControlLabel sx={{
                                 display: "inline-block",
                                 flexShrink: 0,
                                 flexGrow: 0,
                                 margin: "auto 3vmin 0 0"
-                            }} control={<Checkbox defaultChecked 
+                            }} control={<Checkbox defaultChecked
                                 value={settings.showIntro}
-                                onChange={(evt) => setSettings(prev => ({...prev, showIntro: evt.target.value ? true : false}))}
+                                onChange={(evt) => setSettings(prev => ({ ...prev, showIntro: evt.target.value ? true : false }))}
                             />} label="Show Intro" />
                         </Grid>
 
@@ -123,7 +123,7 @@ export default (props: CrawlSettings) => {
                                 fullWidth
                                 variant="standard"
                                 value={settings.logo}
-                                onChange={(evt) => setSettings(prev => ({...prev, logo: evt.target.value}))}
+                                onChange={(evt) => setSettings(prev => ({ ...prev, logo: evt.target.value }))}
                             />
                         </Grid>
 
@@ -138,7 +138,7 @@ export default (props: CrawlSettings) => {
                                 fullWidth
                                 variant="standard"
                                 value={settings.music}
-                                onChange={(evt) => setSettings(prev => ({...prev, music: evt.target.value}))}
+                                onChange={(evt) => setSettings(prev => ({ ...prev, music: evt.target.value }))}
                             />
                         </Grid>
                     </Grid>
