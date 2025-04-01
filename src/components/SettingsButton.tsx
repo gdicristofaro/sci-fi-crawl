@@ -2,7 +2,7 @@ import { Tooltip, IconButton, Dialog, DialogTitle, DialogContent, TextField, For
 import { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid2';
 import SettingsIcon from '@mui/icons-material/Settings';
-import CrawlSettings from "@/dto/CrawlSettings";
+import CrawlSettings from "@/model/CrawlSettings";
 import { url } from "inspector";
 import { setData } from "@/utils/requestutils";
 

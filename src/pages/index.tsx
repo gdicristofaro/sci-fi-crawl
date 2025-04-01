@@ -3,7 +3,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Slider from '@mui/material/Slider';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { createTheme, ThemeProvider, Tooltip } from "@mui/material";
 
 import CopyLinkButton from "@/components/CopyLinkButton";
@@ -12,7 +12,8 @@ import SettingsButton from "@/components/SettingsButton";
 import VolumePanel from "@/components/VolumePanel";
 import CrawlContainer from "@/components/CrawlContainer";
 import { getData } from "@/utils/requestutils";
-import CrawlSettings from "@/dto/CrawlSettings";
+import CrawlSettings from "@/model/CrawlSettings";
+import Player from "@/model/Player";
 
 
 const MAX_SECS = 180;
@@ -43,23 +44,26 @@ const Home = () => {
     showPanel: true
   });
 
-  useEffect(() => {
-    if (playStatus.playing) {
-      let funct = () => {
-        setPlayStatus((prev) => ({ ...prev, position: (new Date().valueOf() - prev.startPlayTime) / (1000 / SEC_RESOLUTION) }));
-      };
+  // useEffect(() => {
+  //   if (playStatus.playing) {
+  //     let funct = () => {
+  //       setPlayStatus((prev) => ({ ...prev, position: (new Date().valueOf() - prev.startPlayTime) / (1000 / SEC_RESOLUTION) }));
+  //     };
 
 
-      let intervalId = setInterval(funct, (1000 / SEC_RESOLUTION));
+  //     let intervalId = setInterval(funct, (1000 / SEC_RESOLUTION));
 
-      return () => clearInterval(intervalId);
-    };
-  }, [playStatus.playing, playStatus.startPlayTime]);
+  //     return () => clearInterval(intervalId);
+  //   };
+  // }, [playStatus.playing, playStatus.startPlayTime]);
+
 
   let requestParams = getData();
 
+  let player = useMemo(() => new Player(undefined, MAX_SECS, position => setPlayStatus(prev => ({ ...prev, position}))), []);
+
   let setPosition = (position: number) => {
-    setPlayStatus((prev) => ({ ...prev, position }));
+    player.seek(position);
   }
 
   let handleChange = (event: Event, newValue: number | number[]) => {
@@ -102,17 +106,9 @@ const Home = () => {
             <Tooltip title={playStatus.playing ? "Pause" : "Play"}>
               <IconButton aria-label="play" onClick={() => {
                 if (playStatus.playing) {
-                  document.documentElement.style.setProperty('--play-state', 'paused');
-                  setPlayStatus((prev) => ({ ...prev, playing: false }));
+                  player.pause();
                 } else {
-                  document.documentElement.style.setProperty('--play-state', 'running');
-                  document.documentElement.style.setProperty('--delay', "-" + playStatus.position + "s");
-                  setPlayStatus((prev) => ({
-                    ...prev,
-                    playing: true,
-                    startPlayTime: new Date().valueOf() - playStatus.position,
-                    showPanel: false
-                  }));
+                  player.play();
                 }
               }}>
                 {playStatus.playing ? (<PauseIcon />) : (<PlayArrowIcon />)}
@@ -137,3 +133,4 @@ const Home = () => {
     </ThemeProvider>
   );
 }
+

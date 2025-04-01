@@ -1,4 +1,4 @@
-import CrawlSettings from "@/dto/CrawlSettings";
+import CrawlSettings from "@/model/CrawlSettings";
 import { useEffect, useState } from "react";
 
 

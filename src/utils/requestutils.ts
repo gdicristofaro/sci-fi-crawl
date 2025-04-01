@@ -1,4 +1,4 @@
-import CrawlSettings from "@/dto/CrawlSettings";
+import CrawlSettings from "@/model/CrawlSettings";
 
 // taken from https://stackoverflow.com/a/831060
 let getRequestParam = (key: string) => {
