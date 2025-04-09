@@ -1,10 +1,10 @@
-const TIME_INTERVAL_MS = 1000;
+const TIME_INTERVAL_MS = 100;
 
 export default class {
-    
-
     private maxPosition: number;
     private audio: HTMLAudioElement | undefined;
+
+
     private positionListener: ((position: number) => void) | undefined;
     private playListener: ((playing: boolean) => void) | undefined;
     private volumeListener: ((volume: number) => void) | undefined;
@@ -39,9 +39,14 @@ export default class {
      * This is called when the document updates outside of this class having knowledge.
      */
     private updateInternalPosition() {
-        this.position = new Date().valueOf() - this.startPlayTime;
-        this.positionListener && this.positionListener(this.position);
-        this.playListener && this.playListener(this.playing);
+        this.position = Math.min(new Date().valueOf() - this.startPlayTime, this.maxPosition);
+        if (this.position >= this.maxPosition && this.playing) {
+            this.pause();
+        } else {
+            this.positionListener && this.positionListener(this.position);
+            this.playListener && this.playListener(this.playing);    
+        }
+        
     }
 
     private startTimeListener() {
@@ -68,6 +73,7 @@ export default class {
         this.playing = true;
         // the calculated start playing time with the position offset considered
         this.startPlayTime = new Date().valueOf() - this.position;
+        this.updateInternalPosition();
         this.updateDocPosition();
         this.startTimeListener();
         
@@ -76,12 +82,14 @@ export default class {
     public pause() {
         this.playing = false;
         this.stopTimeListener();
+        this.updateInternalPosition();
         this.updateDocPosition();
     }
 
     public seek(position: number) {
         this.position = position;
         this.startPlayTime = new Date().valueOf() - this.position;
+        this.positionListener && this.positionListener(this.position);
         this.updateDocPosition();
     }
     

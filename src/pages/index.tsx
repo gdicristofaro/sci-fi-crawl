@@ -16,7 +16,7 @@ import CrawlSettings from "@/model/CrawlSettings";
 import Player from "@/model/Player";
 
 
-const MAX_SECS = 180;
+const MAX_MILLIS = 180 * 1000;
 const SEC_RESOLUTION = 4;
 
 const darkTheme = createTheme({
@@ -60,7 +60,14 @@ const Home = () => {
 
   let requestParams = getData();
 
-  let player = useMemo(() => new Player(undefined, MAX_SECS, position => setPlayStatus(prev => ({ ...prev, position}))), []);
+  let player = useMemo(() => new Player(
+    undefined, 
+    MAX_MILLIS, 
+    position => setPlayStatus(prev => ({ ...prev, position: position / 1000 * SEC_RESOLUTION})),
+    playing => setPlayStatus(prev => ({...prev, playing})),
+    volume => console.log("volume: " + volume)
+  ), []);
+
 
   let setPosition = (position: number) => {
     player.seek(position);
@@ -124,7 +131,7 @@ const Home = () => {
           </div>
 
           <div className="seeking-panel">
-            <Slider aria-label="Play Position" value={playStatus.position} min={0} max={MAX_SECS * SEC_RESOLUTION} onChange={handleChange} />
+            <Slider aria-label="Play Position" value={playStatus.position} min={0} max={MAX_MILLIS / 1000 * SEC_RESOLUTION} onChange={handleChange} />
           </div>
         </div>
 
