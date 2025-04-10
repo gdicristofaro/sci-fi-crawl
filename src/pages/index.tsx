@@ -14,9 +14,10 @@ import CrawlContainer from "@/components/CrawlContainer";
 import { getData } from "@/utils/requestutils";
 import CrawlSettings from "@/model/CrawlSettings";
 import Player from "@/model/Player";
+import TooltipVis from "@/components/TooltipVis";
 
 
-const MAX_MILLIS = 180 * 1000;
+const MAX_MILLIS = 100 * 1000;
 const SEC_RESOLUTION = 4;
 
 const darkTheme = createTheme({
@@ -24,6 +25,7 @@ const darkTheme = createTheme({
     mode: 'dark',
   },
 });
+
 
 export default () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -63,7 +65,7 @@ const Home = () => {
   let player = useMemo(() => new Player(
     undefined, 
     MAX_MILLIS, 
-    position => setPlayStatus(prev => ({ ...prev, position: position / 1000 * SEC_RESOLUTION})),
+    position => setPlayStatus(prev => ({ ...prev, position})),
     playing => setPlayStatus(prev => ({...prev, playing})),
     volume => console.log("volume: " + volume)
   ), []);
@@ -73,8 +75,8 @@ const Home = () => {
     player.seek(position);
   }
 
-  let handleChange = (event: Event, newValue: number | number[]) => {
-    setPosition(newValue as number);
+  let handleSeek = (event: Event, increment: number | number[]) => {
+    setPosition(((increment as number) * 1000) / SEC_RESOLUTION);
   }
 
   return (
@@ -91,36 +93,37 @@ const Home = () => {
             }
           }}>
           <div className="volume-panel">
-            <VolumePanel />
+            <VolumePanel visible={playStatus.showPanel}/>
           </div>
 
           <div className="button-panel">
-            <SettingsButton {...requestParams} />
+            <SettingsButton {...{...requestParams, visible: playStatus.showPanel}} />
             <CopyLinkButton />
-            <FullScreenButton />
+            <FullScreenButton visible={playStatus.showPanel}/>
           </div>
 
           <div className="play-pause-panel">
-            <Tooltip title="Replay">
+            <TooltipVis title="Replay" visible={playStatus.showPanel}>
               <IconButton
                 aria-label="replay"
                 onClick={() => setPosition(0)}
                 disabled={playStatus.position <= 0}>
                 <ReplayIcon />
               </IconButton>
-            </Tooltip>
+            </TooltipVis>
 
-            <Tooltip title={playStatus.playing ? "Pause" : "Play"}>
+            <TooltipVis title={playStatus.playing ? "Pause" : "Play"} visible={playStatus.showPanel}>
               <IconButton aria-label="play" onClick={() => {
                 if (playStatus.playing) {
                   player.pause();
                 } else {
                   player.play();
+                  setPlayStatus((prev) => ({...prev, showPanel: false}))
                 }
               }}>
                 {playStatus.playing ? (<PauseIcon />) : (<PlayArrowIcon />)}
               </IconButton>
-            </Tooltip>
+            </TooltipVis>
             {/* 
           <IconButton aria-label="skip-intro">
             <SkipNextIcon />
@@ -131,7 +134,7 @@ const Home = () => {
           </div>
 
           <div className="seeking-panel">
-            <Slider aria-label="Play Position" value={playStatus.position} min={0} max={MAX_MILLIS / 1000 * SEC_RESOLUTION} onChange={handleChange} />
+            <Slider aria-label="Play Position" value={playStatus.position / 1000 * SEC_RESOLUTION} min={0} max={MAX_MILLIS / 1000 * SEC_RESOLUTION} onChange={handleSeek} />
           </div>
         </div>
 

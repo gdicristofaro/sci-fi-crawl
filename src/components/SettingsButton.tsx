@@ -1,23 +1,23 @@
-import { Tooltip, IconButton, Dialog, DialogTitle, DialogContent, TextField, FormControlLabel, Checkbox, DialogActions, Button } from "@mui/material";
+import { IconButton, Dialog, DialogTitle, DialogContent, TextField, FormControlLabel, Checkbox, DialogActions, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid2';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CrawlSettings from "@/model/CrawlSettings";
 import { url } from "inspector";
 import { setData } from "@/utils/requestutils";
+import TooltipVis from "./TooltipVis";
 
-export default (props: CrawlSettings) => {
+export default (props: CrawlSettings & { visible: boolean }) => {
     let [settingsOpen, setSettingsOpen] = useState(false);
     let [settings, setSettings] = useState(props);
 
-    console.log("props are ", props, "and settings are ", settings)
     return (
         <>
-            <Tooltip title="Settings">
+            <TooltipVis title="Settings" visible={props.visible}>
                 <IconButton aria-label="settings" onClick={() => setSettingsOpen(true)}>
                     <SettingsIcon />
                 </IconButton>
-            </Tooltip>
+            </TooltipVis>
             <Dialog
                 open={settingsOpen}
                 onClose={() => setSettingsOpen(false)}

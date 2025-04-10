@@ -2,6 +2,7 @@ import { Tooltip, IconButton } from "@mui/material";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import { useEffect, useState } from "react";
+import TooltipVis from "./TooltipVis";
 
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
@@ -12,7 +13,7 @@ function toggleFullScreen() {
 }
 
 
-export default () => {
+export default (props: {visible: boolean}) => {
     let [fullScreen, setFullScreen] = useState(false);
 
     useEffect(() => {
@@ -25,7 +26,7 @@ export default () => {
     }, [])
 
     return (
-        <Tooltip title="Full Screen">
+        <TooltipVis title="Full Screen" visible={props.visible}>
             {
                 fullScreen ?
                     (<IconButton aria-label="exit-full-screen" onClick={() => {
@@ -50,5 +51,5 @@ export default () => {
                     )
             }
 
-        </Tooltip>);
+        </TooltipVis>);
 }

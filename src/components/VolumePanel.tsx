@@ -3,12 +3,13 @@ import { Tooltip, IconButton, Slider } from "@mui/material"
 import { useState } from "react";
 
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import TooltipVis from "./TooltipVis";
 
 const DEFAULT_VOLUME = 80;
 const DEFAULT_MUTE = false;
 
 
-export default () => {
+export default (props: {visible: boolean}) => {
 
     let [volState, setVolState] = useState({
         muted: DEFAULT_MUTE,
@@ -22,16 +23,16 @@ export default () => {
         <>
             {
                 volState.muted ?
-                    (<Tooltip title="Unmute">
+                    (<TooltipVis title="Unmute" visible={props.visible}>
                         <IconButton aria-label="unmute" onClick={() => setVolState((prev) => ({ ...prev, muted: false }))}>
                             <VolumeOffIcon />
                         </IconButton>
-                    </Tooltip>) :
-                    (<Tooltip title="Mute">
+                    </TooltipVis>) :
+                    (<TooltipVis title="Mute" visible={props.visible}>
                         <IconButton aria-label="mute" onClick={() => setVolState((prev) => ({ ...prev, muted: true }))}>
                             <VolumeUp />
                         </IconButton>
-                    </Tooltip>)
+                    </TooltipVis>)
 
             }
 

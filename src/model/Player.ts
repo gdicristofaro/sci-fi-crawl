@@ -30,8 +30,19 @@ export default class {
 
     
     private updateDocPosition() {
-        document.documentElement.style.setProperty('--delay', "-" + this.position + "s");
+        let offset = (this.position / 1000) + "s";
+        console.log("offset:", offset);
+        document.documentElement.style.setProperty('--offset', offset);
         document.documentElement.style.setProperty('--play-state', this.playing ? 'running' : 'paused');
+        
+        // let styleEl = document.createElement("style");
+        // document.body.appendChild(styleEl);
+        // document.body.removeChild(styleEl);
+        
+        // for (let el of document.getElementsByClassName("scene")) {
+        //     window.getComputedStyle(el);
+        // }
+        
         // TODO handle audio playing
     }
 
