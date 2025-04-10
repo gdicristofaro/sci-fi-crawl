@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 // Set the star total constant number.
 const STAR_DENSITY = 5400;
+export const ANIMATABLE_CLASS = "animatable";
 
 const DEFAULT_INTRO = " A long time ago in a galaxy far,\nfar away. . . ."
 const DEFAULT_EPISODE = "EPISODE VI";
@@ -26,7 +27,7 @@ const genStarPatterns = (pxWidth: number, pxHeight: number): {className: string,
   let iterations = pxWidth * pxHeight / STAR_DENSITY
   for (let i = 0; i < iterations; i++) {
     for (let className of ["star", "star2", "star3"]) {
-      toRet.push({className, ...genStars(pxWidth, pxHeight)});
+      toRet.push({className: className + " " + ANIMATABLE_CLASS, ...genStars(pxWidth, pxHeight)});
     }
   }
   return toRet;
@@ -115,21 +116,21 @@ export default (props: CrawlSettings) => {
         <source src="./media/Star.Wars.Intro.mp3" type="audio/mp3" />
         <source src="https://play.starwars.com/html5/starwars_crawlcreator/audio/crawl_mixdown.mp3" type="audio/mp3" /> 
         </audio> */}
-        <div className="star-container starpattern">
+        <div className={"star-container starpattern " + ANIMATABLE_CLASS}>
           {(starPatterns || []).map(({x, y, className}, idx) => (<nav key={idx} style={{top: y, left: x}} className={className} />))}
         </div>
-        <div className="intro-div">
-          <div className="intro">{(intro || "").split("\n").map((text, idx) => (<p key={idx}>{text}</p>))}</div>
+        <div className={"intro-div " + ANIMATABLE_CLASS}>
+          <div className={"intro " + ANIMATABLE_CLASS}>{(intro || "").split("\n").map((text, idx) => (<p key={idx}>{text}</p>))}</div>
         </div>
         <div className="scene">
-          <div className="crawl">
+          <div className={"crawl " + ANIMATABLE_CLASS}>
             <p className="episode">{episode}</p>
             <p className="title">{title}</p>
             <div className="content">{(crawl || "").split("\n").map((text, idx) => (<p key={idx}>{text}</p>))}</div>
           </div>
         </div>
         {/* <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Star_Wars_Logo.svg" aria-details="Star Wars Logo"/> */}
-        <svg className="logo" viewBox="0 0 634 273">
+        <svg className={"crawl-logo " + ANIMATABLE_CLASS} viewBox="0 0 634 273">
           <title>StarWarsLogo</title>
           <g id="logo" stroke="none" strokeWidth="1" fill="none" fillRule="nonzero"
             transform="translate(-1.000000, 0.000000)">

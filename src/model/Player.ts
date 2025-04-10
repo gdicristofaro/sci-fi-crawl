@@ -1,4 +1,6 @@
-const TIME_INTERVAL_MS = 100;
+import { ANIMATABLE_CLASS } from "@/components/CrawlContainer";
+
+const TIME_INTERVAL_MS = 500;
 
 export default class {
     private maxPosition: number;
@@ -12,11 +14,12 @@ export default class {
     private position: number = 0;
     private startPlayTime: number = 0;
     private playing: boolean = false;
-    private timeListenerId : NodeJS.Timeout | undefined = undefined;
-    
+    private requiresAnimationReset: boolean = false;
+    private timeListenerId: NodeJS.Timeout | undefined = undefined;
+
     public constructor(
-        audio: HTMLAudioElement | undefined, 
-        maxPosition: number, 
+        audio: HTMLAudioElement | undefined,
+        maxPosition: number,
         positionListener: ((position: number) => void) | undefined,
         playListener: ((playing: boolean) => void) | undefined,
         volumeListener: ((volume: number) => void) | undefined
@@ -28,21 +31,30 @@ export default class {
         this.volumeListener = volumeListener;
     }
 
-    
+
+    // taken from https://stackoverflow.com/a/45036752 to reset animation
+    private resetAnimation(el: any) {
+        el.style.animation = 'none';
+        el.offsetHeight; /* trigger reflow */
+        el.clientLeft;
+        el.style.animation = null;
+    }
+
     private updateDocPosition() {
         let offset = (this.position / 1000) + "s";
-        console.log("offset:", offset);
+        // console.log("offset:", offset);
         document.documentElement.style.setProperty('--offset', offset);
         document.documentElement.style.setProperty('--play-state', this.playing ? 'running' : 'paused');
-        
-        // let styleEl = document.createElement("style");
-        // document.body.appendChild(styleEl);
-        // document.body.removeChild(styleEl);
-        
-        // for (let el of document.getElementsByClassName("scene")) {
-        //     window.getComputedStyle(el);
-        // }
-        
+
+        if (this.playing || this.requiresAnimationReset) {
+            for (let animatable of document.getElementsByClassName(ANIMATABLE_CLASS)) {
+                this.resetAnimation(animatable);
+            }
+
+            if (!this.playing)
+            this.requiresAnimationReset = false;
+        }
+
         // TODO handle audio playing
     }
 
@@ -55,9 +67,9 @@ export default class {
             this.pause();
         } else {
             this.positionListener && this.positionListener(this.position);
-            this.playListener && this.playListener(this.playing);    
+            this.playListener && this.playListener(this.playing);
         }
-        
+
     }
 
     private startTimeListener() {
@@ -82,16 +94,18 @@ export default class {
 
     public play() {
         this.playing = true;
+        this.requiresAnimationReset = true;
         // the calculated start playing time with the position offset considered
         this.startPlayTime = new Date().valueOf() - this.position;
         this.updateInternalPosition();
         this.updateDocPosition();
         this.startTimeListener();
-        
+
     }
 
     public pause() {
         this.playing = false;
+        this.requiresAnimationReset = true;
         this.stopTimeListener();
         this.updateInternalPosition();
         this.updateDocPosition();
@@ -103,5 +117,5 @@ export default class {
         this.positionListener && this.positionListener(this.position);
         this.updateDocPosition();
     }
-    
+
 }

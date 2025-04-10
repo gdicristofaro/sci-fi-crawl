@@ -2,9 +2,9 @@ import { Tooltip } from "@mui/material";
 
 export default (props: { title: string, visible: boolean, children: any}) => {
   let {title, visible, children} = props;
-  return visible ?
-    (<Tooltip title={title}>
+
+  let tooltipProps = {title, classes: visible ? undefined : {popper: "invisible"}}
+  return (<Tooltip {...tooltipProps}>
         {children}
-    </Tooltip>) :
-    (children);
+    </Tooltip>);
 }
