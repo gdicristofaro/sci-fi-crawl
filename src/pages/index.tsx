@@ -1,10 +1,17 @@
+/**
+ * TODO:
+ * volume
+ * change logo
+ * auto size for text???
+ */
+
 import IconButton from "@mui/material/IconButton";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState, useMemo } from "react";
-import { createTheme, ThemeProvider, Tooltip } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 import CopyLinkButton from "@/components/CopyLinkButton";
 import FullScreenButton from "@/components/FullScreenButton";
@@ -60,14 +67,13 @@ const Home = () => {
   // }, [playStatus.playing, playStatus.startPlayTime]);
 
 
-  let requestParams = getData();
+  let requestParams = useMemo(() => getData(), [window.location.search]);
 
   let player = useMemo(() => new Player(
-    undefined, 
+    requestParams?.music ? new Audio(requestParams.music) : undefined, 
     MAX_MILLIS, 
     position => setPlayStatus(prev => ({ ...prev, position})),
-    playing => setPlayStatus(prev => ({...prev, playing})),
-    volume => console.log("volume: " + volume)
+    playing => setPlayStatus(prev => ({...prev, playing}))
   ), []);
 
 
@@ -93,7 +99,7 @@ const Home = () => {
             }
           }}>
           <div className="volume-panel">
-            <VolumePanel visible={playStatus.showPanel}/>
+            <VolumePanel visible={playStatus.showPanel} initialVolume={1} setter={(vol) => player.setVolume(vol)}/>
           </div>
 
           <div className="button-panel">
@@ -106,7 +112,12 @@ const Home = () => {
             <TooltipVis title="Replay" visible={playStatus.showPanel}>
               <IconButton
                 aria-label="replay"
-                onClick={() => setPosition(0)}
+                onClick={() => {
+                  setPosition(0);
+                  if (playStatus.playing) {
+                    setPlayStatus((prev) => ({...prev, showPanel: false}))
+                  }
+                }}
                 disabled={playStatus.position <= 0}>
                 <ReplayIcon />
               </IconButton>

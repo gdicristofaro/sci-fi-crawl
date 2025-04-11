@@ -9,7 +9,6 @@ export default class {
 
     private positionListener: ((position: number) => void) | undefined;
     private playListener: ((playing: boolean) => void) | undefined;
-    private volumeListener: ((volume: number) => void) | undefined;
 
     private position: number = 0;
     private startPlayTime: number = 0;
@@ -21,14 +20,12 @@ export default class {
         audio: HTMLAudioElement | undefined,
         maxPosition: number,
         positionListener: ((position: number) => void) | undefined,
-        playListener: ((playing: boolean) => void) | undefined,
-        volumeListener: ((volume: number) => void) | undefined
+        playListener: ((playing: boolean) => void) | undefined
     ) {
         this.audio = audio;
         this.maxPosition = maxPosition;
         this.positionListener = positionListener;
         this.playListener = playListener;
-        this.volumeListener = volumeListener;
     }
 
 
@@ -89,15 +86,32 @@ export default class {
         if (this.audio && !this.audio.paused) {
             this.audio.volume = volumePerc;
         }
-        this.volumeListener && this.volumeListener(volumePerc);
+    }
+
+    public setAudioPosition(positionMs: number) {
+        if (this.audio) {
+            this.audio.currentTime = positionMs / 1000;
+        } 
+    }
+
+    public setAudioPlayback(playing: boolean) {
+        if (this.audio) {
+            if (playing) {
+                this.audio.play();
+            } else {
+                this.audio.pause();
+            }
+        }
     }
 
     public play() {
         this.playing = true;
         this.requiresAnimationReset = true;
         // the calculated start playing time with the position offset considered
+        this.setAudioPosition(this.position);
         this.startPlayTime = new Date().valueOf() - this.position;
         this.updateInternalPosition();
+        this.setAudioPlayback(true);
         this.updateDocPosition();
         this.startTimeListener();
 
@@ -107,12 +121,14 @@ export default class {
         this.playing = false;
         this.requiresAnimationReset = true;
         this.stopTimeListener();
+        this.setAudioPlayback(false);
         this.updateInternalPosition();
         this.updateDocPosition();
     }
 
     public seek(position: number) {
         this.position = position;
+        this.setAudioPosition(this.position);
         this.startPlayTime = new Date().valueOf() - this.position;
         this.positionListener && this.positionListener(this.position);
         this.updateDocPosition();
