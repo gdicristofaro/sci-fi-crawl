@@ -1,6 +1,6 @@
 import { ANIMATABLE_CLASS } from "@/components/CrawlContainer";
 
-const TIME_INTERVAL_MS = 500;
+const TIME_INTERVAL_MS = 200;
 
 export default class {
     private maxPosition: number;
@@ -12,18 +12,21 @@ export default class {
 
     private position: number = 0;
     private startPlayTime: number = 0;
+    private musicOffsetMs: number = 0;
     private playing: boolean = false;
     private requiresAnimationReset: boolean = false;
     private timeListenerId: NodeJS.Timeout | undefined = undefined;
 
     public constructor(
         audio: HTMLAudioElement | undefined,
+        musicOffsetMs: number,
         maxPosition: number,
         positionListener: ((position: number) => void) | undefined,
         playListener: ((playing: boolean) => void) | undefined
     ) {
         this.audio = audio;
         this.maxPosition = maxPosition;
+        this.musicOffsetMs = musicOffsetMs;
         this.positionListener = positionListener;
         this.playListener = playListener;
     }
@@ -63,6 +66,7 @@ export default class {
         if (this.position >= this.maxPosition && this.playing) {
             this.pause();
         } else {
+            this.checkSetAudioPosition(false);
             this.positionListener && this.positionListener(this.position);
             this.playListener && this.playListener(this.playing);
         }
@@ -88,19 +92,25 @@ export default class {
         }
     }
 
-    public setAudioPosition(positionMs: number) {
-        if (this.audio) {
-            this.audio.currentTime = positionMs / 1000;
-        } 
+    public getAudioOffSet(positionMs: number): number {
+        return (positionMs - this.musicOffsetMs) / 1000;
     }
 
-    public setAudioPlayback(playing: boolean) {
-        if (this.audio) {
-            if (playing) {
+    public checkSetAudioPosition(forceUpdate: boolean) {
+        if (this.audio && this.playing && (this.audio.paused || forceUpdate)) {
+            let audioOffset = this.getAudioOffSet(this.position);
+            if (audioOffset >= 0) {
+                this.audio.currentTime = audioOffset;
                 this.audio.play();
-            } else {
+            } else if (forceUpdate) {
                 this.audio.pause();
             }
+        }
+    }
+
+    public stopAudio() {
+        if (this.audio) {
+            this.audio.pause();
         }
     }
 
@@ -108,11 +118,10 @@ export default class {
         this.playing = true;
         this.requiresAnimationReset = true;
         // the calculated start playing time with the position offset considered
-        this.setAudioPosition(this.position);
         this.startPlayTime = new Date().valueOf() - this.position;
         this.updateInternalPosition();
-        this.setAudioPlayback(true);
         this.updateDocPosition();
+        this.checkSetAudioPosition(true);
         this.startTimeListener();
 
     }
@@ -121,14 +130,14 @@ export default class {
         this.playing = false;
         this.requiresAnimationReset = true;
         this.stopTimeListener();
-        this.setAudioPlayback(false);
+        this.stopAudio();
         this.updateInternalPosition();
         this.updateDocPosition();
     }
 
     public seek(position: number) {
         this.position = position;
-        this.setAudioPosition(this.position);
+        this.checkSetAudioPosition(true);
         this.startPlayTime = new Date().valueOf() - this.position;
         this.positionListener && this.positionListener(this.position);
         this.updateDocPosition();

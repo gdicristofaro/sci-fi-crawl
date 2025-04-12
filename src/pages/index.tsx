@@ -1,6 +1,6 @@
 /**
  * TODO:
- * volume
+ * audio offset
  * change logo
  * auto size for text???
  */
@@ -19,7 +19,7 @@ import SettingsButton from "@/components/SettingsButton";
 import VolumePanel from "@/components/VolumePanel";
 import CrawlContainer from "@/components/CrawlContainer";
 import { getData } from "@/utils/requestutils";
-import CrawlSettings from "@/model/CrawlSettings";
+import CrawlSettings, { DEFAULT_CRAWL_SETTINGS } from "@/model/CrawlSettings";
 import Player from "@/model/Player";
 import TooltipVis from "@/components/TooltipVis";
 
@@ -69,8 +69,11 @@ const Home = () => {
 
   let requestParams = useMemo(() => getData(), [window.location.search]);
 
+  let inferredParams: CrawlSettings = {...requestParams, ...DEFAULT_CRAWL_SETTINGS};
+
   let player = useMemo(() => new Player(
-    requestParams?.music ? new Audio(requestParams.music) : undefined, 
+    inferredParams?.music ? new Audio(inferredParams.music) : undefined, 
+    (inferredParams?.musicOffset ?? 0) * 1000, // convert seconds to milliseconds
     MAX_MILLIS, 
     position => setPlayStatus(prev => ({ ...prev, position})),
     playing => setPlayStatus(prev => ({...prev, playing}))
@@ -88,7 +91,7 @@ const Home = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="main-container">
-        <CrawlContainer {...requestParams} />
+        <CrawlContainer {...inferredParams} />
 
         <div
           id="control-panel"
