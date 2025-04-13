@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: "export",
   reactMaxHeadersLength: 64000,
+  basePath: '/sci-fi-crawl'
 };
 
 export default nextConfig;
