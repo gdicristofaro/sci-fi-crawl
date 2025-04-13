@@ -1,13 +1,7 @@
-/**
- * TODO:
- * audio offset
- * change logo
- * auto size for text???
- */
-
 import IconButton from "@mui/material/IconButton";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState, useMemo } from "react";
@@ -26,6 +20,7 @@ import TooltipVis from "@/components/TooltipVis";
 
 const MAX_MILLIS = 100 * 1000;
 const SEC_RESOLUTION = 4;
+const INTRO_END_MS = 8000;
 
 const darkTheme = createTheme({
   palette: {
@@ -49,27 +44,12 @@ const Home = () => {
   let [playStatus, setPlayStatus] = useState({
     playing: false,
     position: 0,
-    startPlayTime: 0,
     showPanel: true
   });
 
-  // useEffect(() => {
-  //   if (playStatus.playing) {
-  //     let funct = () => {
-  //       setPlayStatus((prev) => ({ ...prev, position: (new Date().valueOf() - prev.startPlayTime) / (1000 / SEC_RESOLUTION) }));
-  //     };
-
-
-  //     let intervalId = setInterval(funct, (1000 / SEC_RESOLUTION));
-
-  //     return () => clearInterval(intervalId);
-  //   };
-  // }, [playStatus.playing, playStatus.startPlayTime]);
-
-
   let requestParams = useMemo(() => getData(), [window.location.search]);
 
-  let inferredParams: CrawlSettings = {...requestParams, ...DEFAULT_CRAWL_SETTINGS};
+  let inferredParams: CrawlSettings = {...DEFAULT_CRAWL_SETTINGS, ...requestParams};
 
   let player = useMemo(() => new Player(
     inferredParams?.music ? new Audio(inferredParams.music) : undefined, 
@@ -138,12 +118,19 @@ const Home = () => {
                 {playStatus.playing ? (<PauseIcon />) : (<PlayArrowIcon />)}
               </IconButton>
             </TooltipVis>
-            {/* 
-          <IconButton aria-label="skip-intro">
-            <SkipNextIcon />
-          </IconButton> 
-          */}
-            <div></div>
+
+            <TooltipVis title="Skip Intro" visible={playStatus.showPanel}>
+              <IconButton aria-label="skip-intro" onClick={() => {
+                setPosition(INTRO_END_MS);
+                if (playStatus.playing) {
+                  setPlayStatus((prev) => ({...prev, showPanel: false}))
+                }
+              }}>
+                <SkipNextIcon />
+              </IconButton>
+            </TooltipVis>
+         
+            {/* <div></div> */}
 
           </div>
 

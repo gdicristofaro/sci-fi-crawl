@@ -83,11 +83,7 @@ export default (props: CrawlSettings & { visible: boolean }) => {
                                 onChange={(evt) => setSettings(prev => ({ ...prev, crawl: evt.target.value }))}
                             />
                         </Grid>
-                        <Grid size={12} sx={{
-                            display: "flex",
-                            alignContent: "baseline",
-                            alignItems: "baseline"
-                        }}>
+                        <Grid size={12}>
                             <TextField
                                 autoFocus
                                 margin="dense"
@@ -101,15 +97,6 @@ export default (props: CrawlSettings & { visible: boolean }) => {
                                 value={settings.intro}
                                 onChange={(evt) => setSettings(prev => ({ ...prev, intro: evt.target.value }))}
                             />
-                            <FormControlLabel sx={{
-                                display: "inline-block",
-                                flexShrink: 0,
-                                flexGrow: 0,
-                                margin: "auto 3vmin 0 0"
-                            }} control={<Checkbox defaultChecked
-                                value={settings.showIntro}
-                                onChange={(evt) => setSettings(prev => ({ ...prev, showIntro: evt.target.value ? true : false }))}
-                            />} label="Show Intro" />
                         </Grid>
 
                         <Grid size={12}>
@@ -127,7 +114,7 @@ export default (props: CrawlSettings & { visible: boolean }) => {
                             />
                         </Grid>
 
-                        <Grid size={12}>
+                        <Grid size={8}>
                             <TextField
                                 autoFocus
                                 margin="dense"
@@ -139,6 +126,22 @@ export default (props: CrawlSettings & { visible: boolean }) => {
                                 variant="standard"
                                 value={settings.music}
                                 onChange={(evt) => setSettings(prev => ({ ...prev, music: evt.target.value }))}
+                            />
+                        </Grid>
+
+                        <Grid size={4}>
+                            <TextField
+                                autoFocus
+                                
+                                margin="dense"
+                                id="musicStart"
+                                name="Music Start (secs)"
+                                label="Music Start (secs)"
+                                type="number"
+                                fullWidth
+                                variant="standard"
+                                value={settings.musicOffset}
+                                onChange={(evt) => setSettings(prev => ({ ...prev, musicOffset: parseFloat(evt.target.value) }))}
                             />
                         </Grid>
                     </Grid>
