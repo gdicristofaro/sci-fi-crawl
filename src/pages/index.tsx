@@ -47,9 +47,18 @@ const Home = () => {
     showPanel: true
   });
 
-  let requestParams = useMemo(() => getData(), [window.location.search]);
+  let [requestParams, inferredParams] = useMemo(() => {
+    let req = getData();
+    let baseInferred = {...DEFAULT_CRAWL_SETTINGS, ...requestParams};
+    let inferred: CrawlSettings = {};
+    for (let key of Object.keys(baseInferred)) {
+      if ((baseInferred as any)[key]?.toString()?.trim()?.length) {
+        (inferred as any)[key] = (baseInferred as any)[key];
+      }
+    }
+    return [req, inferred];
+  }, [window.location.search]);
 
-  let inferredParams: CrawlSettings = {...DEFAULT_CRAWL_SETTINGS, ...requestParams};
 
   let player = useMemo(() => new Player(
     inferredParams?.music ? new Audio(inferredParams.music) : undefined, 

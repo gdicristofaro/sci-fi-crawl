@@ -29,7 +29,7 @@ export function getData(): CrawlSettings | undefined {
 export function stringifyData(obj: CrawlSettings): string {
     let newObj : any = {};
     for (let key of Object.keys(obj)) {
-        if ((obj as any)[key]?.toString()?.trim()?.length) {
+        if ((obj as any)[key]?.toString()?.length) {
             newObj[key] = (obj as any)[key];
         }
     }
