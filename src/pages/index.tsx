@@ -49,7 +49,7 @@ const Home = () => {
 
   let [requestParams, inferredParams] = useMemo(() => {
     let req = getData();
-    let baseInferred = {...DEFAULT_CRAWL_SETTINGS, ...requestParams};
+    let baseInferred = {...DEFAULT_CRAWL_SETTINGS, ...req};
     let inferred: CrawlSettings = {};
     for (let key of Object.keys(baseInferred)) {
       if ((baseInferred as any)[key]?.toString()?.trim()?.length) {
