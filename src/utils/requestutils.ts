@@ -27,7 +27,13 @@ export function getData(): CrawlSettings | undefined {
 }
 
 export function stringifyData(obj: CrawlSettings): string {
-    return btoa(JSON.stringify(obj));
+    let newObj : any = {};
+    for (let key of Object.keys(obj)) {
+        if ((obj as any)[key] && (obj as any)[key].toString().trim().length) {
+            newObj[key] = (obj as any)[key];
+        }
+    }
+    return btoa(JSON.stringify(newObj));
 }
 
 export function setData(obj: CrawlSettings) {
