@@ -8,8 +8,8 @@ export const ANIMATABLE_CLASS = "animatable";
 
 // Create a function to generate our star constant.
 const genStars = (pxWidth: number, pxHeight: number) => {
-  var x = Math.floor(Math.random() * pxWidth);
-  var y = Math.floor(Math.random() * pxHeight * 2);
+  const x = Math.floor(Math.random() * pxWidth);
+  const y = Math.floor(Math.random() * pxHeight * 2);
   return { x, y };
 }
 

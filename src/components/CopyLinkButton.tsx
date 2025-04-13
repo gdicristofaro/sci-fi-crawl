@@ -20,7 +20,7 @@ export default () => {
     });
 
     const handleUrlCopy = () => {
-        let text = window.location.href;
+        const text = window.location.href;
         navigator.clipboard.writeText(text);
 
         setState({

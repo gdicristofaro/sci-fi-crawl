@@ -1,7 +1,7 @@
 import CrawlSettings from "@/model/CrawlSettings";
 
 // taken from https://stackoverflow.com/a/831060
-let getRequestParam = (key: string) => {
+const getRequestParam = (key: string) => {
     let data = (new RegExp('[?&]' + encodeURIComponent(key) + '=([^&]*)')).exec(window.location.search);
     if (data) {
         return decodeURIComponent(data[1]);
