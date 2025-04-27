@@ -1,4 +1,5 @@
 import CrawlSettings from "@/model/CrawlSettings";
+import { Base64 } from "js-base64";
 
 // taken from https://stackoverflow.com/a/831060
 const getRequestParam = (key: string) => {
@@ -17,7 +18,7 @@ export function getData(): CrawlSettings | undefined {
 
     let json = {};
     if (requestStr) {
-        let base64decode = atob(requestStr);
+        let base64decode = Base64.decode(requestStr);
         if (base64decode) {
             json = JSON.parse(base64decode);
         }
@@ -28,12 +29,13 @@ export function getData(): CrawlSettings | undefined {
 
 export function stringifyData(obj: CrawlSettings): string {
     let newObj : any = {};
-    for (let key of Object.keys(obj)) {
-        if ((obj as any)[key]?.toString()?.length) {
-            newObj[key] = (obj as any)[key];
+    for (let key of (Object.keys(obj) as Array<keyof CrawlSettings>)) {
+        let objVal = obj[key];
+        if (objVal !== undefined && ((typeof(objVal) !== 'string') || (objVal as string).length)) {
+            newObj[key] = objVal;
         }
     }
-    return btoa(JSON.stringify(newObj));
+    return Base64.encode(JSON.stringify(newObj));
 }
 
 export function setData(obj: CrawlSettings) {

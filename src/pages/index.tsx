@@ -91,7 +91,7 @@ const Home = () => {
             }
           }}>
           <div className="volume-panel">
-            <VolumePanel visible={playStatus.showPanel} initialVolume={1} setter={(vol) => player.setVolume(vol)}/>
+            <VolumePanel visible={playStatus.showPanel} initialVolume={player.getVolume()} setter={(vol) => player.setVolume(vol)}/>
           </div>
 
           <div className="button-panel">

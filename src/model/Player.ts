@@ -13,6 +13,9 @@ export default class {
     private position: number = 0;
     private startPlayTime: number = 0;
     private musicOffsetMs: number = 0;
+
+    private volume: number = 1;
+
     private playing: boolean = false;
     private requiresAnimationReset: boolean = false;
     private timeListenerId: NodeJS.Timeout | undefined = undefined;
@@ -87,10 +90,17 @@ export default class {
     }
 
     public setVolume(volumePerc: number) {
-        if (this.audio && !this.audio.paused) {
+        this.volume = volumePerc;
+        if (this.audio) {
             this.audio.volume = volumePerc;
         }
     }
+
+    public getVolume() {
+        return this.volume;
+    }
+
+
 
     public getAudioOffSet(positionMs: number): number {
         return (positionMs - this.musicOffsetMs) / 1000;
