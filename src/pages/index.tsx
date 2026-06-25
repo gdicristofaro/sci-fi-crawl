@@ -90,11 +90,9 @@ const Home = () => {
   useEffect(() => {
     const onActivity = () => revealControls();
     window.addEventListener("keydown", onActivity);
-    // window.addEventListener("mousedown", onActivity);
     window.addEventListener("focusin", onActivity);
     return () => {
       window.removeEventListener("keydown", onActivity);
-      // window.removeEventListener("mousedown", onActivity );
       window.removeEventListener("focusin", onActivity);
       if (hideTimerRef.current) {
         clearTimeout(hideTimerRef.current);

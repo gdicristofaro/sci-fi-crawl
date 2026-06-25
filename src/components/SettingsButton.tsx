@@ -1,6 +1,6 @@
 import { IconButton, Dialog, DialogTitle, DialogContent, TextField, FormControlLabel, Checkbox, DialogActions, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CrawlSettings from "@/model/CrawlSettings";
 import { setData } from "@/utils/requestutils";

@@ -13,26 +13,26 @@
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.8",
-    "@mui/material": "^6.4.8",
-    "js-base64": "^3.7.7",
-    "next": "15.2.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.1.1",
+    "@mui/material": "^9.1.2",
+    "js-base64": "^3.7.8",
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@eslint/eslintrc": "^3",
-    "@playwright/test": "^1.61.0",
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^26",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.2.3",
+    "eslint": "^10",
+    "eslint-config-next": "16.2.9",
     "gh-pages": "^6.3.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^6"
   }
 }

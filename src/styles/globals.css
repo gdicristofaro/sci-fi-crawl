@@ -72,22 +72,6 @@ body {
   pointer-events: none;
 }
 
-/*
- * Keyboard reveal: when a control receives keyboard focus (:focus-visible, i.e. Tab/arrow
- * navigation -- not a mouse click), force the whole panel back to full visibility and make
- * the controls interactive again.
- */
-/* .control-panel.hide:has(:focus-visible) * {
-  opacity: 1;
-}
-
-.control-panel.hide:has(:focus-visible) button,
-.control-panel.hide:has(:focus-visible) a,
-.control-panel.hide:has(:focus-visible) input,
-.control-panel.hide:has(:focus-visible) [role="slider"] {
-  pointer-events: auto;
-} */
-
 .volume-panel {
   position: absolute;
   display: flex;
