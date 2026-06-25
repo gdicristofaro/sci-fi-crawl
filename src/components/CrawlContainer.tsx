@@ -45,8 +45,8 @@ export default (props: CrawlSettings) => {
 
   return (
     <div className="crawl-container">
-      <div className={"star-container starpattern " + ANIMATABLE_CLASS}>
-        {(starPatterns || []).map(({ x, y, className }, idx) => (<nav key={idx} style={{ top: y, left: x }} className={className} />))}
+      <div className={"star-container starpattern " + ANIMATABLE_CLASS} aria-hidden="true">
+        {(starPatterns || []).map(({ x, y, className }, idx) => (<div key={idx} style={{ top: y, left: x }} className={className} />))}
       </div>
       <div className={"intro-div " + ANIMATABLE_CLASS}>
         <div className={"intro " + ANIMATABLE_CLASS}>{(intro || "").split("\n").map((text, idx) => (<p key={idx}>{text}</p>))}</div>
@@ -61,6 +61,7 @@ export default (props: CrawlSettings) => {
 
       <div
         className={"crawl-logo " + ANIMATABLE_CLASS}
+        aria-hidden="true"
         dangerouslySetInnerHTML={{ __html: logo || "" }}
       >
       </div>

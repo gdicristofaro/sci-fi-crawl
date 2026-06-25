@@ -49,19 +49,44 @@ body {
   z-index: 10;
 }
 
+
 .control-panel * {
   opacity: 1;
-  visibility: visible;
-  transition: visibility .4s, opacity .4s ease-in; 
+  transition: opacity .4s ease-in;
 }
 
-
+/*
+ * When hidden we fade the controls out with opacity only 
+ */
 .control-panel.hide * {
   opacity: 0;
-  visibility: hidden;
-  transition: opacity .4s ease-in, visibility .4s; 
-  /* transition: opacity 1s linear, visibility 0s; */
+  transition: opacity .4s ease-in;
 }
+
+
+/* Invisible controls must not swallow mouse clicks meant for the background toggle. */
+.control-panel.hide button,
+.control-panel.hide a,
+.control-panel.hide input,
+.control-panel.hide [role="slider"] {
+  pointer-events: none;
+}
+
+/*
+ * Keyboard reveal: when a control receives keyboard focus (:focus-visible, i.e. Tab/arrow
+ * navigation -- not a mouse click), force the whole panel back to full visibility and make
+ * the controls interactive again.
+ */
+/* .control-panel.hide:has(:focus-visible) * {
+  opacity: 1;
+}
+
+.control-panel.hide:has(:focus-visible) button,
+.control-panel.hide:has(:focus-visible) a,
+.control-panel.hide:has(:focus-visible) input,
+.control-panel.hide:has(:focus-visible) [role="slider"] {
+  pointer-events: auto;
+} */
 
 .volume-panel {
   position: absolute;

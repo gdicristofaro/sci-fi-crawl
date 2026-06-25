@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid2';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CrawlSettings from "@/model/CrawlSettings";
-import { url } from "inspector";
 import { setData } from "@/utils/requestutils";
 import TooltipVis from "./TooltipVis";
 
@@ -56,7 +55,6 @@ export default (props: CrawlSettings & { visible: boolean }) => {
                         </Grid>
                         <Grid size={12}>
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="title"
                                 name="Title"
@@ -70,7 +68,6 @@ export default (props: CrawlSettings & { visible: boolean }) => {
                         </Grid>
                         <Grid size={12}>
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="crawl"
                                 name="Crawl"
@@ -85,7 +82,6 @@ export default (props: CrawlSettings & { visible: boolean }) => {
                         </Grid>
                         <Grid size={12}>
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="intro"
                                 name="Intro"
@@ -101,7 +97,6 @@ export default (props: CrawlSettings & { visible: boolean }) => {
 
                         <Grid size={12}>
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="logo"
                                 name="Logo"
@@ -116,7 +111,6 @@ export default (props: CrawlSettings & { visible: boolean }) => {
 
                         <Grid size={8}>
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="music"
                                 name="Music"
@@ -131,8 +125,6 @@ export default (props: CrawlSettings & { visible: boolean }) => {
 
                         <Grid size={4}>
                             <TextField
-                                autoFocus
-                                
                                 margin="dense"
                                 id="musicStart"
                                 name="Music Start (secs)"

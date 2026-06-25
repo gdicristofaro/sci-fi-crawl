@@ -4,7 +4,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Slider from '@mui/material/Slider';
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 import CopyLinkButton from "@/components/CopyLinkButton";
@@ -21,6 +21,8 @@ import TooltipVis from "@/components/TooltipVis";
 const MAX_MILLIS = 100 * 1000;
 const SEC_RESOLUTION = 4;
 const INTRO_END_MS = 8000;
+// While the crawl is playing the controls fade out after this much inactivity.
+const CONTROLS_HIDE_DELAY_MS = 3500;
 
 const darkTheme = createTheme({
   palette: {
@@ -69,6 +71,37 @@ const Home = () => {
   ), []);
 
 
+  // Surface the controls on any user activity (keyboard, pointer, or focus) and, while the
+  // crawl is playing, fade them back out after a period of inactivity. Keyboard users get the
+  // same "bring the controls back" affordance that mouse users had via clicking the backdrop.
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const revealControls = useCallback(() => {
+    setPlayStatus((prev) => (prev.showPanel ? prev : { ...prev, showPanel: true }));
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+    }
+    hideTimerRef.current = setTimeout(() => {
+      // Only auto-hide while playing; when paused the controls stay put.
+      setPlayStatus((prev) => (prev.playing ? { ...prev, showPanel: false } : prev));
+    }, CONTROLS_HIDE_DELAY_MS);
+  }, []);
+
+  useEffect(() => {
+    const onActivity = () => revealControls();
+    window.addEventListener("keydown", onActivity);
+    // window.addEventListener("mousedown", onActivity);
+    window.addEventListener("focusin", onActivity);
+    return () => {
+      window.removeEventListener("keydown", onActivity);
+      // window.removeEventListener("mousedown", onActivity );
+      window.removeEventListener("focusin", onActivity);
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+      }
+    };
+  }, [revealControls]);
+
   let setPosition = (position: number) => {
     player.seek(position);
   }
@@ -88,6 +121,7 @@ const Home = () => {
           onClick={(e) => {
             if ((e.target as any).id === "control-panel") {
               setPlayStatus((prev) => ({ ...prev, showPanel: !prev.showPanel }));
+              e.preventDefault();
             }
           }}>
           <div className="volume-panel">
